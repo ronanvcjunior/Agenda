@@ -36,7 +36,7 @@ const helmet = require('helmet')
 const csrf = require('csurf')
 
 // middlewares são funções que são executadas no meio do caminho de uma rota
-const { middlewareGlobal, checkCsrfError, csrfMiddleware } = require('./src/middlewares/middleware')
+const { checkCsrfError, variablesLocalsMiddleware } = require('./src/middlewares/middleware')
 
 // habilite somente no processo de produção
 // app.use(helmet())
@@ -67,7 +67,7 @@ app.use(csrf())
 
 // Nossos proprios middlewares
 app.use(checkCsrfError)
-app.use(csrfMiddleware)
+app.use(variablesLocalsMiddleware)
 
 app.use(routes)
 
