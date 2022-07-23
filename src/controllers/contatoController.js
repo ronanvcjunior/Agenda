@@ -53,7 +53,7 @@ exports.edit = async (req, res) => {
     if(!req.params.id) return res.render('error', {
       title: 'Esse contato não foi possível ser acessado ou não existe.',
     })
-    
+
     const contato = new Contato(req.body)
     await contato.edit(req.params.id)
 
@@ -74,4 +74,20 @@ exports.edit = async (req, res) => {
       error: 'Error: ' + error.message
     })
   }
+}
+
+exports.delete = async (req, res) => {
+  if(!req.params.id) return res.render('error', {
+    title: 'Esse contato não foi possível ser acessado ou não existe.',
+  })
+
+  const contato = await Contato.deleteContatoById(req.params.id)
+
+  if(!contato) return res.render('error', {
+    title: 'Esse contato não foi possível ser acessado ou não existe.',
+  })
+
+  req.flash('success', `Seu contato foi apagado com sucesso. ${contato.name}`)
+  req.session.save(() => { res.redirect(`back`) })
+  return
 }

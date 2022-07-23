@@ -65,7 +65,17 @@ Contato.prototype.edit = async function(id) {
 
 Contato.getContatoById = async function (id) {
   if (typeof id !== 'string') return
-  return user = await ContatoModel.findById(id)
+  return await ContatoModel.findById(id)
+}
+
+Contato.deleteContatoById = async function (id) {
+  if (typeof id !== 'string') return
+  return await ContatoModel.findByIdAndRemove(id)
+}
+
+Contato.getListOfContatos = async function () {
+  return await ContatoModel.find()
+    .sort({dateCreated: -1})
 }
 
 module.exports = Contato
