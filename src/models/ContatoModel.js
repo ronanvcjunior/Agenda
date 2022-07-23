@@ -19,7 +19,6 @@ function Contato(body) {
 
 Contato.prototype.register = async function() {
   this.validate()
-
   if(this.errors.length > 0) return
 
   this.contato = await ContatoModel.create(this.body)
@@ -52,6 +51,16 @@ Contato.prototype.cleanUp = function() {
     phone: this.body.phone,
     email: this.body.email,
   }
+}
+
+Contato.prototype.edit = async function(id) {
+  if (typeof id !== 'string') return
+
+  this.validate()
+  if(this.errors.length > 0) return
+
+  this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {new: true})
+
 }
 
 Contato.getContatoById = async function (id) {

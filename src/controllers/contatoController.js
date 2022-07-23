@@ -47,3 +47,31 @@ exports.editIndex = async (req, res) => {
     contato
   })
 }
+
+exports.edit = async (req, res) => {
+  try {
+    if(!req.params.id) return res.render('error', {
+      title: 'Esse contato não foi possível ser acessado ou não existe.',
+    })
+    
+    const contato = new Contato(req.body)
+    await contato.edit(req.params.id)
+
+  if(contato.errors.length > 0) {
+    req.flash('errors', contato.errors)
+    req.session.save(() => {
+      return res.redirect('back')
+    })
+    return
+  }
+  
+    req.flash('success', 'Seu contato foi atualizado com sucesso')
+    req.session.save(() => {
+      return res.redirect(`/contato/${contato.contato._id}`)
+    })
+  } catch (error) {
+    return res.render('error', {
+      error: 'Error: ' + error.message
+    })
+  }
+}
